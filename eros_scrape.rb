@@ -4,37 +4,35 @@ require 'pp'
 require 'net/http'
 require 'uri'
 require 'open-uri'
+require 'twilio-ruby'
 
 proxy_address = '60.55.55.142'
 proxy_port = 80
-michigan_cities = ["detroit", "grand_rapids", "ann_arbor", "warren"]
 
-
+account_sid = 'AC864bbd53ef32316e4b948b6a633d17a9'
+auth_token = '2e826734df6abd25ad512381afcae6c3'
+@client = Twilio::REST::Client.new account_sid, auth_token
 
 Net::HTTP.new('http://hidemyass.com', nil, proxy_address, proxy_port)
+	
+	puts "Welcome to TraffickStop!"
+	puts "Reading eros, phone numbers to be contacted will be shown below"
+	puts ""
+
 	agent = Mechanize.new 
-	# page = agent.get('http://eros.com') 
-	# page = agent.get('http://www.eros-michigan.com/sections/detroit_michigan_escorts.htm')
-		# Click Ann Arbor link
+
 	states = {'michigan' => ['detroit', 'ann_arbor'],  'alabama' => ['birmingham', 'huntsville', 'mobile', 'montgomery', 'tuscaloosa']}
 	states.keys.each do |state|
 		states[state].each do |city|
 			page = agent.get('http://www.eros-' + state + '.com/sections/' + city + '_' + state + '_escorts.htm')
 			list = page.root.css('frame[name="select"]')[0].attributes['src'].value
-			# pp list
+
 			listingURL = 'http://www.eros-' + state + '.com' + list
 
 			page = agent.get(listingURL)
 
-			# michigan = page.link_with(:text => 'Detroit ').click
-			# detroit = michigan.link_with(:text => '                        Detroit (37)')
-			#puts link.text
-
-			#michigan = @page.link_with(:text => 'Detroit ').clic
-			# puts michigan.uri
 			listings = page.root.css('li.listing>div.listing-core>p.listing-name>a')
 			links = listings.map { |link| link.attributes['href'].value }
-			# pp links
 
 			phones = []
 
@@ -45,32 +43,26 @@ Net::HTTP.new('http://hidemyass.com', nil, proxy_address, proxy_port)
 					phones << p.text.chop!
 				end
 			end
-			pp phones
+
+			counter = 0
+			phones.each do |x| 
+				phone_number = x.gsub(/[^0-9]/, "")
+				phone_number = phone_number[0..9]
+				phone_array = []
+				phone_array.push(phone_number)
+				puts phone_array[counter]
+
+				#  INSERT TWILIO CODE
+
+			end
+			#pp phones
 		end
 	end
+			# ^^^ INSERT ABOVE ^^^
+	message = @client.account.sms.messages.create(:body => "This is a demonstration of TraffickStop",
+		:to => "+17344783974", 
+		:from => "+16164332137")
+	#puts message.sid
+	puts "Now Exiting TraffickStop"
 
-
-	#detroit = michigan.link_with(:text => '').click
-	
-
-
-	#this = page.link_with(:class => 'Ann Arbor').click
-		#initial_page = agent.click(page.link_with(:text => /Ann Arbor/))
-		#doc = Nokogiri::HTML(open('http://eros.com'))    #<= parses document
-		#puts this                                        #<= parses document
-		
-		#ann_arbor_page = initial_page.form_with(:name => '')
-	
-
-	#dc_page = page.click() 
-
-
-	
-#	pp page
-
-
-
-#@agent ||= Mechanize.new.tap do |agent|
-#	agent.set_proxy('60.55.55.142', 80) # <= setting the proxy
-#end
 
