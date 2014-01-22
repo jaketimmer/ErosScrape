@@ -9,10 +9,12 @@ require 'twilio-ruby'
 proxy_address = '60.55.55.142'
 proxy_port = 80
 
+# Twilio information
 account_sid = 'AC864bbd53ef32316e4b948b6a633d17a9'
-auth_token = '2e826734df6abd25ad512381afcae6c3'
+auth_token = ''
 @client = Twilio::REST::Client.new account_sid, auth_token
 
+# Set Proxy
 Net::HTTP.new('http://hidemyass.com', nil, proxy_address, proxy_port)
 	
 	puts "Welcome to TraffickStop!"
@@ -55,13 +57,12 @@ Net::HTTP.new('http://hidemyass.com', nil, proxy_address, proxy_port)
 				#  INSERT TWILIO CODE
 
 			end
-			#pp phones
 		end
 	end
 			# ^^^ INSERT ABOVE ^^^
 	message = @client.account.sms.messages.create(:body => "This is a demonstration of TraffickStop",
-		:to => "+17344783974", 
-		:from => "+16164332137")
+		:to => "+", 				# <= number contacting
+		:from => "+16164332137")    # <= my twilio num 
 	#puts message.sid
 	puts "Now Exiting TraffickStop"
 
