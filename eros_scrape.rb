@@ -10,8 +10,8 @@ proxy_address = '60.55.55.142'
 proxy_port = 80
 
 # Twilio information
-account_sid = ''
-auth_token = ''
+account_sid = 'AC864bbd53ef32316e4b948b6a633d17a9'
+auth_token = '2e826734df6abd25ad512381afcae6c3'
 @client = Twilio::REST::Client.new account_sid, auth_token
 
 # Set Proxy
