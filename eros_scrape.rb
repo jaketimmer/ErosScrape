@@ -62,7 +62,7 @@ Net::HTTP.new('http://hidemyass.com', nil, proxy_address, proxy_port)
 			# ^^^ INSERT ABOVE ^^^
 	message = @client.account.sms.messages.create(:body => "This is a demonstration of TraffickStop",
 		:to => "+", 				# <= number contacting
-		:from => "+16164332137")    # <= my twilio num 
+		:from => "+")    # <= my twilio num 
 	#puts message.sid
 	puts "Now Exiting TraffickStop"
 
